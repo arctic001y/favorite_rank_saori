@@ -27,6 +27,7 @@ const SMALL_60_3STAR = new Set([
 ]);
 
 function normalizedTier(gift, variant, giftId) {
+  if (giftId === "gift-box") return "large"; // 効果大アイコン固定
   const base = effectTier(variant, giftId); // xlarge/large/medium/small
 
   // ★3でsmallになったものは基本mediumに格上げ（ただし例外はsmallのまま）
@@ -61,6 +62,7 @@ function rankFromTotalExp(expTotal, totalExp) {
 }
 
 function giftExpPer(gift, tier) {
+  if (gift.rarity === 4) return 60; // gift_box は常に60
   // ★3でも常に60にしたい例外
   const ALWAYS_60 = new Set([
     "glittering-bouquet", // きらめきの花束
@@ -313,6 +315,7 @@ function calcAndRender({ commit = false } = {}) {
 
       const icon = reactionIconPath(tier);
       const count = inventory[gift.id] ?? 0;
+      const rarityClass = gift.rarity === 3 ? "r3" : "r2"; // ★4もr2扱い
 
       cards.push(`
         <div class="card" data-gift-id="${gift.id}">
