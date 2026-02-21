@@ -1,0 +1,317 @@
+/* src/style.css */
+
+/* ページ全体 */
+:root {
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #ffffff;
+  color: #111;
+}
+
+/* コンテナ */
+#app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* 上部ツールバー */
+.toolbar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.toolbar input[type="search"] {
+  padding: 6px 8px;
+  min-width: 260px;
+}
+
+.toolbar select,
+.toolbar input[type="number"] {
+  padding: 6px 8px;
+}
+
+.toolbar button {
+  border-radius: 8px;
+  border: 1px solid #c9c9c9;
+  padding: 6px 10px;
+  background: #fff;
+  cursor: pointer;
+}
+.toolbar button:hover {
+  border-color: #777;
+}
+
+/* グリッド */
+/* 1行4列固定（画面が狭い時は自動で段数落ち） */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* 画面幅に応じて列数を減らす（スマホ対策） */
+@media (max-width: 1000px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 420px) {
+  .grid { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+}
+
+.stepper input[type="number"] {
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.inputsUnderGrid {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.inputsUnderGrid select,
+.inputsUnderGrid input[type="number"] {
+  padding: 6px 8px;
+}
+
+/* カード */
+.card {
+  border: 1px solid #d0d0d0;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+  position: relative;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reactionIcon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+.cardHeader {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.cardHeader > div:last-child {
+  min-width: 0; /* ← ellipsisが効くように必要 */
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid #d0d0d0;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.name {
+  flex: 1 1 auto;
+  white-space: nowrap;       /* 1行固定 */
+  overflow: hidden;
+  text-overflow: ellipsis;   /* … 省略 */
+  max-height: none;          /* 既存のmax-heightがあれば無効化 */
+}
+
+/* 結果ブロック：左アイコン + 右テキスト */
+.resultRow {
+  display: flex;
+  gap: 16px;
+  align-items: stretch; /* ← 高さを揃える（アイコンを縦いっぱいに） */
+}
+
+/* 左の生徒アイコン：縦いっぱい、横は縦に合わせる */
+.studentIcon {
+  height: 100%;          /* ← 親の高さに合わせる */
+  width: auto;           /* ← 縦に合わせて横は自動 */
+  max-height: 140px;     /* ← 大きくなりすぎ防止（好みで調整） */
+  border-radius: 14px;
+  border: 1px solid #d0d0d0;
+  background: #fafafa;
+  object-fit: cover;
+  flex: 0 0 auto;
+  display: block; /* img の謎余白対策 */
+}
+
+/* 右側：4項目を大きめに */
+.resultList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  white-space: pre-wrap;
+  font-size: 18px;       /* ← 文字を大きく */
+  line-height: 1.6;
+}
+
+.meta {
+  display: none;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.stepper button {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid #c9c9c9;
+  background: #fff;
+  cursor: pointer;
+}
+
+.count {
+  min-width: 44px;
+  text-align: center;
+  padding: 4px 6px;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  background: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.section {
+  margin-top: 14px;
+}
+
+/* 結果欄 */
+.result {
+  margin-top: 12px;
+  padding: 6px 18px;
+  border: 1px solid #c9c9c9;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  background: rgba(196, 227, 243, 0.45);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+.resultSection {
+  margin-top: 0; /* sectionの上余白を消す */
+}
+
+
+.siteHeader {
+  border-radius: 16px;
+  padding: 60px 22px;
+  margin-bottom: 12px;
+
+  /* 背景画像（仮パス） */
+  background-image: url("/header/saori_header.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* 読みやすさ用のオーバーレイ */
+  position: relative;
+  overflow: hidden;
+}
+
+/* 文字の可読性を上げる薄い幕（任意だけど推奨） */
+.siteHeader::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.1); /* 0.12〜0.28で調整 */
+}
+
+.siteTitle {
+  position: relative; /* オーバーレイより上に */
+  margin: 0;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+
+/* アイコン枠の共通 */
+.icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  flex: 0 0 44px;
+}
+
+/* ★2：金グラデ（ベース＋ハイライト） */
+.icon.r2 {
+  background: linear-gradient(135deg,
+    rgb(255, 236, 165) 0%,
+    rgb(214, 176, 92) 55%,
+    rgb(170, 125, 55) 100%
+  );
+}
+
+/* ★3：紫グラデ */
+.icon.r3 {
+  background: linear-gradient(135deg,
+    rgb(201, 170, 255) 0%,
+    rgb(142, 96, 232) 55%,
+    rgb(92, 54, 180) 100%
+  );
+}
+
+/* ちょい“レア感”のツヤ */
+.icon.r2::after,
+.icon.r3::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.45) 0%,
+    rgba(255,255,255,0.08) 45%,
+    rgba(255,255,255,0.0) 100%
+  );
+  pointer-events: none;
+}
+
+/* 画像自体は枠の中で綺麗に */
+.icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: rgba(255,255,255,0.85); /* 透過PNGでも沈まない */
+}

@@ -1,0 +1,73 @@
+{
+  "student": {
+    "id": "saori",
+    "name": "錠前サオリ",
+    "variants": [
+      {
+        "id": "saori_normal",
+        "label": "サオリ",
+        "preferences": {
+          "xlarge": [
+            "beautiful-bouquet", 
+            "refreshing-bouquet"
+          ],
+          "large": [
+            "cherry-rose-color-gloss",
+            "bb-cream",
+            "samuela-the-beyond",
+            "glittering-bouquet",
+            "miku-photo-card"
+          ],
+          "medium": [
+            "military-camouflage-cream"
+          ]
+        }
+      },
+      {
+        "id": "saori_swimsuit",
+        "label": "サオリ（水着）",
+        "preferences": {
+          "xlarge": [
+            "fashionable-comb", 
+            "beautiful-bouquet", 
+            "refreshing-bouquet"
+          ],
+          "large": [
+            "cherry-rose-color-gloss",
+            "bb-cream",
+            "military-camouflage-cream",
+            "summer-float",
+            "samuela-the-beyond",
+            "glittering-bouquet",
+            "miku-photo-card"
+          ],
+          "medium": [
+            "mx-ration"
+          ]
+        }
+      },
+      {
+        "id": "saori_dress",
+        "label": "サオリ（ドレス）",
+        "preferences": {
+          "xlarge": [
+            "fashionable-comb", 
+            "beautiful-bouquet", 
+            "refreshing-bouquet"
+          ],
+          "large": [
+            "samuela-the-beyond", 
+            "cherry-rose-color-gloss", 
+            "glittering-bouquet",
+            "miku-photo-card"
+          ],
+          "medium": [
+            "handkerchief", 
+            "military-camouflage-cream", 
+            "bb-cream"
+          ]
+        }
+      }
+    ]
+  }
+}
