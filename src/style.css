@@ -315,3 +315,7 @@ body {
   object-fit: cover;
   background: rgba(255,255,255,0.85); /* 透過PNGでも沈まない */
 }
+
+.qty::placeholder {
+  opacity: 0.35;
+}

@@ -208,99 +208,99 @@ function makeIconHTML(gift) {
     return getVariant(saori, variantSelect.value);
   }
 
-// 生徒アイコン選択ロジック
-function studentIconPath(variantId) {
-  switch (variantId) {
-    case "saori_normal":   return assetUrl("student-icons/saori_icon.png");
-    case "saori_swimsuit": return assetUrl("student-icons/saori_swim_icon.png");
-    case "saori_dress":    return assetUrl("student-icons/saori_dress_icon.png");
-    default:               return assetUrl("student-icons/saori_icon.png");
-  }
-}
-
-function calcAndRender({ commit = false } = {}) {
-  if (!Array.isArray(expTotal) || expTotal.length < 2) {
-    renderResultHTML({ icon: studentIconPath(variantSelect.value), items: ["exp_table.json が不正です"] });
-    return;
-  }
-
-  const MAX_RANK = expTotal.length - 1;
-
-  const raw = currentRankEl.value.trim();
-
-  // 入力中に空になるのはOK（この時点では計算しない）
-  if (raw === "") {
-    renderResultHTML({
-      icon: studentIconPath(variantSelect.value),
-      items: ["現在の絆ランクを入力してください"]
-    });
-    return;
-  }
-
-  // 数字以外は一旦待つ（入力途中扱い）
-  if (!/^\d+$/.test(raw)) {
-    renderResultHTML({
-      icon: studentIconPath(variantSelect.value),
-      items: ["現在の絆ランクは数字で入力してください"]
-    });
-    return;
-  }
-
-  let currentRank = Math.floor(Number(raw));
-  if (!Number.isFinite(currentRank)) currentRank = 1;
-
-  // commit=true（確定タイミング）だけ入力欄を補正する
-  if (commit) {
-    currentRank = Math.max(1, Math.min(MAX_RANK, currentRank));
-    currentRankEl.value = String(currentRank);
-  } else {
-    // 入力中は補正しないが、範囲外なら計算は止めてメッセージ
-    if (currentRank < 1 || currentRank > MAX_RANK) {
-      renderResultHTML({
-        icon: studentIconPath(variantSelect.value),
-        items: [`現在の絆ランクは 1〜${MAX_RANK} の範囲で入力してください`]
-      });
-      return;
+  // 生徒アイコン選択ロジック
+  function studentIconPath(variantId) {
+    switch (variantId) {
+      case "saori_normal": return assetUrl("student-icons/saori_icon.png");
+      case "saori_swimsuit": return assetUrl("student-icons/saori_swim_icon.png");
+      case "saori_dress": return assetUrl("student-icons/saori_dress_icon.png");
+      default: return assetUrl("student-icons/saori_icon.png");
     }
   }
 
-  const variant = currentVariant();
+  function calcAndRender({ commit = false } = {}) {
+    if (!Array.isArray(expTotal) || expTotal.length < 2) {
+      renderResultHTML({ icon: studentIconPath(variantSelect.value), items: ["exp_table.json が不正です"] });
+      return;
+    }
 
-  // 獲得EXP
-  let gainExp = 0;
-  for (const [giftId, count] of Object.entries(inventory)) {
-    const c = Number(count) || 0;
-    if (c <= 0) continue;
+    const MAX_RANK = expTotal.length - 1;
 
-    const gift = giftById.get(giftId);
-    if (!gift) continue;
+    const raw = currentRankEl.value.trim();
 
-    const tier = normalizedTier(gift, variant, giftId);
-    const per = giftExpPer(gift, tier);
-    gainExp += per * c;
+    // 入力中に空になるのはOK（この時点では計算しない）
+    if (raw === "") {
+      renderResultHTML({
+        icon: studentIconPath(variantSelect.value),
+        items: ["現在の絆ランクを入力してください"]
+      });
+      return;
+    }
+
+    // 数字以外は一旦待つ（入力途中扱い）
+    if (!/^\d+$/.test(raw)) {
+      renderResultHTML({
+        icon: studentIconPath(variantSelect.value),
+        items: ["現在の絆ランクは数字で入力してください"]
+      });
+      return;
+    }
+
+    let currentRank = Math.floor(Number(raw));
+    if (!Number.isFinite(currentRank)) currentRank = 1;
+
+    // commit=true（確定タイミング）だけ入力欄を補正する
+    if (commit) {
+      currentRank = Math.max(1, Math.min(MAX_RANK, currentRank));
+      currentRankEl.value = String(currentRank);
+    } else {
+      // 入力中は補正しないが、範囲外なら計算は止めてメッセージ
+      if (currentRank < 1 || currentRank > MAX_RANK) {
+        renderResultHTML({
+          icon: studentIconPath(variantSelect.value),
+          items: [`現在の絆ランクは 1〜${MAX_RANK} の範囲で入力してください`]
+        });
+        return;
+      }
+    }
+
+    const variant = currentVariant();
+
+    // 獲得EXP
+    let gainExp = 0;
+    for (const [giftId, count] of Object.entries(inventory)) {
+      const c = Number(count) || 0;
+      if (c <= 0) continue;
+
+      const gift = giftById.get(giftId);
+      if (!gift) continue;
+
+      const tier = normalizedTier(gift, variant, giftId);
+      const per = giftExpPer(gift, tier);
+      gainExp += per * c;
+    }
+
+    const currentTotal = Number(expTotal[currentRank]);
+    const afterTotal = currentTotal + gainExp;
+
+    const reachedRank = Math.min(rankFromTotalExp(expTotal, afterTotal), MAX_RANK);
+
+    let toNext = 0;
+    if (reachedRank < MAX_RANK) {
+      const rawNext = Number(expTotal[reachedRank + 1]) - afterTotal;
+      toNext = rawNext <= 0 ? 0 : rawNext;
+    }
+
+    renderResultHTML({
+      icon: studentIconPath(variant.id),
+      items: [
+        `現在の絆ランク: ${currentRank}`,
+        `獲得経験値: ${gainExp}`,
+        `到達可能な絆ランク: ${reachedRank}`,
+        `次のランクまでに必要な経験値: ${toNext}`
+      ]
+    });
   }
-
-  const currentTotal = Number(expTotal[currentRank]);
-  const afterTotal = currentTotal + gainExp;
-
-  const reachedRank = Math.min(rankFromTotalExp(expTotal, afterTotal), MAX_RANK);
-
-  let toNext = 0;
-  if (reachedRank < MAX_RANK) {
-    const rawNext = Number(expTotal[reachedRank + 1]) - afterTotal;
-    toNext = rawNext <= 0 ? 0 : rawNext;
-  }
-
-  renderResultHTML({
-    icon: studentIconPath(variant.id),
-    items: [
-      `現在の絆ランク: ${currentRank}`,
-      `獲得経験値: ${gainExp}`,
-      `到達可能な絆ランク: ${reachedRank}`,
-      `次のランクまでに必要な経験値: ${toNext}`
-    ]
-  });
-}
 
   function renderGrid() {
     const variant = currentVariant();
@@ -316,6 +316,7 @@ function calcAndRender({ commit = false } = {}) {
       const icon = reactionIconPath(tier);
       const count = inventory[gift.id] ?? 0;
       const rarityClass = gift.rarity === 3 ? "r3" : "r2"; // ★4もr2扱い
+      const valueAttr = count === 0 ? "" : String(count);
 
       cards.push(`
         <div class="card" data-gift-id="${gift.id}">
@@ -331,7 +332,15 @@ function calcAndRender({ commit = false } = {}) {
           </div>
           <div class="stepper">
             <label style="font-size:12px; opacity:.85;">個数</label>
-            <input class="qty" type="number" min="0" step="1" value="${count}" style="width:72px; padding:4px 6px;" />
+            <input
+              class="qty"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              placeholder="0"
+              value="${valueAttr}"
+              style="width:72px; padding:4px 6px;"
+            />
           </div>
         </div>
       `);
@@ -345,13 +354,26 @@ function calcAndRender({ commit = false } = {}) {
       const input = card.querySelector(".qty");
 
       input.addEventListener("input", () => {
-        const n = Math.max(0, Math.floor(Number(input.value) || 0));
-        input.value = String(n);
+        // 数字以外は除去
+        const digits = (input.value || "").replace(/[^\d]/g, "");
+        input.value = digits; // 表示を正規化
 
-        if (n === 0) delete inventory[giftId];
-        else inventory[giftId] = n;
+        if (digits === "") {
+          delete inventory[giftId];     // 空なら0扱い
+        } else {
+          const n = Math.max(0, Math.floor(Number(digits)));
+          if (n === 0) delete inventory[giftId];
+          else inventory[giftId] = n;
+        }
 
-        calcAndRender(); // グリッドは再描画しない（入力中にチラつかない）
+        calcAndRender();
+      });
+
+      // フォーカス時に全選択（スマホ対策でsetTimeout）
+      input.addEventListener("focus", () => {
+        setTimeout(() => {
+          input.select();
+        }, 0);
       });
     });
   }
@@ -363,7 +385,7 @@ function calcAndRender({ commit = false } = {}) {
   });
   currentRankEl.addEventListener("input", () => calcAndRender({ commit: false }));
   currentRankEl.addEventListener("change", () => calcAndRender({ commit: true }));
-  currentRankEl.addEventListener("blur",   () => calcAndRender({ commit: true }));
+  currentRankEl.addEventListener("blur", () => calcAndRender({ commit: true }));
   //targetRankEl.addEventListener("input", calcAndRender);
   searchEl.addEventListener("input", renderGrid);
   tierFilterEl.addEventListener("change", renderGrid);
