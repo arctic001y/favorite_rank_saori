@@ -551,3 +551,8 @@ button {
   font-size: 14px;
   box-sizing: border-box;
 }
+
+/* 生徒のプルダウン幅修正 */
+#variantSelect{
+  width: 200px !important;   /* ここを 220px とかにしてもOK */
+}
