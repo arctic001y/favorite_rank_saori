@@ -152,13 +152,29 @@ function buildUI(saori) {
 
       <!-- グリッド下：衣装・現在ランク -->
       <div class="section inputsUnderGrid">
-        <label>生徒:
-          <select id="variantSelect"></select>
-        </label>
+        <div class="inputsRow">
+          <label>生徒:
+            <select id="variantSelect"></select>
+          </label>
 
-        <label>現在の絆ランク:
-          <input id="currentRank" type="number" value="1" min="1" max="100" style="width:90px;" />
-        </label>
+          <label>現在の絆ランク:
+            <input id="currentRank" type="number" value="1" min="1" max="100" style="width:90px;" />
+          </label>
+        </div>
+
+        <div class="inputsRow" style="margin-top:8px;">
+          <label>ふれあい回数:
+            <input id="touchCount" type="number" value="0" min="0" step="1" style="width:90px;" />
+          </label>
+
+          <label>スケジュール訪問回数:
+            <input id="scheduleCount" type="number" value="0" min="0" step="1" style="width:90px;" />
+          </label>
+
+          <label>スケジュール訪問回数（ボーナス）:
+            <input id="scheduleBonusCount" type="number" value="0" min="0" step="1" style="width:90px;" />
+          </label>
+        </div>
       </div>
 
       <!-- 結果 -->
@@ -209,6 +225,9 @@ function makeIconHTML(gift) {
 
   const variantSelect = document.getElementById("variantSelect");
   const currentRankEl = document.getElementById("currentRank");
+  const touchCountEl = document.getElementById("touchCount");
+  const scheduleCountEl = document.getElementById("scheduleCount");
+  const scheduleBonusCountEl = document.getElementById("scheduleBonusCount");
   //const targetRankEl = document.getElementById("targetRank");
   const searchEl = document.getElementById("search");
   const tierFilterEl = document.getElementById("tierFilter");
@@ -290,6 +309,16 @@ function makeIconHTML(gift) {
       const per = giftExpPer(gift, tier);
       gainExp += per * c;
     }
+
+    // 追加獲得EXP（ふれあい/スケジュール）
+    const touchCount = Math.max(0, Math.floor(Number(touchCountEl.value) || 0));
+    const scheduleCount = Math.max(0, Math.floor(Number(scheduleCountEl.value) || 0));
+    const scheduleBonusCount = Math.max(0, Math.floor(Number(scheduleBonusCountEl.value) || 0));
+
+    const bonusExp = touchCount * 15 + scheduleCount * 25 + scheduleBonusCount * 50;
+
+    // 合算
+    gainExp += bonusExp;
 
     const currentTotal = Number(expTotal[currentRank]);
     const afterTotal = currentTotal + gainExp;
@@ -400,6 +429,9 @@ function makeIconHTML(gift) {
   //targetRankEl.addEventListener("input", calcAndRender);
   searchEl.addEventListener("input", renderGrid);
   tierFilterEl.addEventListener("change", renderGrid);
+touchCountEl.addEventListener("input", calcAndRender);
+scheduleCountEl.addEventListener("input", calcAndRender);
+scheduleBonusCountEl.addEventListener("input", calcAndRender);
 
   const overlay = document.getElementById("confirmOverlay");
   const btnNo = document.getElementById("confirmNo");
@@ -423,6 +455,11 @@ function makeIconHTML(gift) {
 
   btnYes.addEventListener("click", () => {
     for (const k of Object.keys(inventory)) delete inventory[k];
+
+    touchCountEl.value = "0";
+    scheduleCountEl.value = "0";
+    scheduleBonusCountEl.value = "0";
+
     renderGrid();
     calcAndRender();
     closeConfirm();
