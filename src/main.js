@@ -389,25 +389,33 @@ function makeIconHTML(gift) {
   //targetRankEl.addEventListener("input", calcAndRender);
   searchEl.addEventListener("input", renderGrid);
   tierFilterEl.addEventListener("change", renderGrid);
+
+  let resetArmed = false;
+  let resetTimer = null;
+
   function onReset() {
-    if (!confirm("本当にリセットしますか？")) return;
+    if (!resetArmed) {
+      resetBtn.textContent = "本当にリセットしますか？";
+      resetArmed = true;
+
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        resetArmed = false;
+        resetBtn.textContent = "個数リセット";
+      }, 3000);
+
+      return;
+    }
+
     for (const k of Object.keys(inventory)) delete inventory[k];
     renderGrid();
     calcAndRender();
+
+    resetArmed = false;
+    resetBtn.textContent = "個数リセット";
   }
 
-  // click（PC含む）
   resetBtn.addEventListener("click", onReset);
-
-  // touch（スマホ向けの保険）
-  resetBtn.addEventListener(
-    "touchend",
-    (e) => {
-      e.preventDefault(); // タップを確実に動作させる
-      onReset();
-    },
-    { passive: false }
-  );
 
   // 初期描画
   renderGrid();
