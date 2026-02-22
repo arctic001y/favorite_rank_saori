@@ -166,6 +166,18 @@ function buildUI(saori) {
         <div id="result" class="result"></div>
       </div>
     </div>
+
+    <!-- 確認モーダル（#app直下に置く） -->
+    <div id="confirmOverlay" class="overlay" hidden>
+      <div class="modal">
+        <div class="modalTitle">確認</div>
+        <div class="modalText">本当にリセットしますか？</div>
+        <div class="modalBtns">
+          <button id="confirmNo" type="button">キャンセル</button>
+          <button id="confirmYes" type="button">リセット</button>
+        </div>
+      </div>
+    </div>
   `;
 
   const variantSelect = document.getElementById("variantSelect");
@@ -173,7 +185,6 @@ function buildUI(saori) {
     .map(v => `<option value="${v.id}">${v.label}</option>`)
     .join("");
 
-  // デフォルトで通常衣装を表示
   const defaultId =
     saori.student.variants.find(v => v.id === "saori_normal")?.id
     ?? saori.student.variants[0]?.id;
@@ -390,32 +401,32 @@ function makeIconHTML(gift) {
   searchEl.addEventListener("input", renderGrid);
   tierFilterEl.addEventListener("change", renderGrid);
 
-  let resetArmed = false;
-  let resetTimer = null;
+  const overlay = document.getElementById("confirmOverlay");
+  const btnNo = document.getElementById("confirmNo");
+  const btnYes = document.getElementById("confirmYes");
 
-  function onReset() {
-    if (!resetArmed) {
-      resetBtn.textContent = "本当にリセットしますか？";
-      resetArmed = true;
+  function openConfirm() {
+    overlay.hidden = false;
+  }
+  function closeConfirm() {
+    overlay.hidden = true;
+  }
 
-      clearTimeout(resetTimer);
-      resetTimer = setTimeout(() => {
-        resetArmed = false;
-        resetBtn.textContent = "個数リセット";
-      }, 3000);
+  resetBtn.addEventListener("click", openConfirm);
 
-      return;
-    }
+  btnNo.addEventListener("click", closeConfirm);
 
+  // 背景クリックで閉じる
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeConfirm();
+  });
+
+  btnYes.addEventListener("click", () => {
     for (const k of Object.keys(inventory)) delete inventory[k];
     renderGrid();
     calcAndRender();
-
-    resetArmed = false;
-    resetBtn.textContent = "個数リセット";
-  }
-
-  resetBtn.addEventListener("click", onReset);
+    closeConfirm();
+  });
 
   // 初期描画
   renderGrid();
