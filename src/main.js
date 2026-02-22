@@ -171,7 +171,7 @@ function buildUI(saori) {
             <input id="scheduleCount" type="number" value="0" min="0" step="1" style="width:90px;" />
           </label>
 
-          <label>スケジュール訪問回数（ボーナス）:
+          <label>スケジュール訪問回数(BONUS):
             <input id="scheduleBonusCount" type="number" value="0" min="0" step="1" style="width:90px;" />
           </label>
         </div>
