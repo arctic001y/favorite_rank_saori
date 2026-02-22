@@ -256,7 +256,7 @@ body {
   position: relative; /* オーバーレイより上に */
   margin: 0;
   color: #fff;
-  font-size: 25px;
+  font-size: 18px;
   font-weight: 800;
   letter-spacing: 0.02em;
   text-shadow: 0 2px 10px rgba(0,0,0,0.35);
@@ -510,4 +510,44 @@ button {
 .inputsUnderGrid select{
   height: 30px;
   padding: 2px 8px;
+}
+
+/* inputsRowに余計な上マージンが付いてるのを潰す */
+.inputsUnderGrid .inputsRow{
+  margin-top: 0 !important;
+}
+
+/* ===== 入力ブロック：左寄せ＋均等な間隔 ===== */
+.inputsUnderGrid{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 8px; 
+  margin-top: 10px;
+}
+
+.inputsUnderGrid .inputsRow{
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ラベル行は 1行を「ラベル + 入力」で固定 */
+.inputsUnderGrid label{
+  display: grid; 
+  grid-template-columns: 160px auto; 
+  align-items: center;
+  column-gap: 10px;
+  margin: 0 !important;
+  line-height: 1.2;
+}
+
+/* 入力を小さくする（横幅＆高さ） */
+.inputsUnderGrid input,
+.inputsUnderGrid select{
+  width: 90px !important; 
+  height: 26px !important;
+  padding: 2px 6px !important;
+  font-size: 14px;
+  box-sizing: border-box;
 }
