@@ -319,3 +319,94 @@ body {
 .qty::placeholder {
   opacity: 0.35;
 }
+
+
+/* =========================
+   Mobile: 5 columns + compact result
+   ========================= */
+
+/* スマホは 5列（カードを小さく） */
+@media (max-width: 520px) {
+  /* 贈り物グリッド：5列固定 */
+  .grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  /* カード全体を小さく */
+  .card {
+    padding: 8px;
+    border-radius: 10px;
+  }
+
+  .cardHeader {
+    gap: 6px;
+  }
+
+  /* アイコン枠を小さく（縮まないよう固定） */
+  .icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    flex: 0 0 34px;
+  }
+
+  /* 名前は省略しつつ小さく */
+  .name {
+    font-size: 11px;
+    line-height: 1.2;
+  }
+
+  .reactionIcon {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* 個数欄もコンパクトに */
+  .stepper {
+    margin-top: 6px;
+    gap: 6px;
+  }
+  .stepper label {
+    font-size: 11px;
+  }
+
+  /* あなたの入力は .qty（text入力）なのでここ */
+  .qty {
+    width: 42px !important;
+    padding: 2px 6px !important;
+    font-size: 12px;
+    height: 26px;
+    border-radius: 8px;
+  }
+
+  /* ===== リザルトを小さく ===== */
+  .result {
+    padding: 8px 12px;
+    border-radius: 12px;
+  }
+
+  .resultRow {
+    gap: 10px;
+  }
+
+  /* 生徒アイコンを小さく */
+  .studentIcon {
+    max-height: 92px;   /* 140px → 92px */
+    border-radius: 12px;
+  }
+
+  /* 右側の4項目を小さく */
+  .resultList {
+    font-size: 14px;   /* 18px → 14px */
+    line-height: 1.45;
+    gap: 2px;
+  }
+}
+
+/* さらに小さい端末だけ 4列に落とす（5列がきつい場合の保険） */
+@media (max-width: 390px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
