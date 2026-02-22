@@ -322,14 +322,13 @@ body {
 
 
 /* =========================
-   Mobile: 5 columns + compact result
+   Mobile: 4 columns (gifts)
    ========================= */
 
-/* スマホは 5列（カードを小さく） */
 @media (max-width: 520px) {
-  /* 贈り物グリッド：5列固定 */
+  /* 贈り物グリッド：4列固定 */
   .grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
   }
 
@@ -355,6 +354,10 @@ body {
   .name {
     font-size: 11px;
     line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
 
   .reactionIcon {
@@ -371,7 +374,6 @@ body {
     font-size: 11px;
   }
 
-  /* あなたの入力は .qty（text入力）なのでここ */
   .qty {
     width: 42px !important;
     padding: 2px 6px !important;
