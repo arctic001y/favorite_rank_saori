@@ -554,5 +554,5 @@ button {
 
 /* 生徒のプルダウン幅修正 */
 #variantSelect{
-  width: 200px !important;   /* ここを 220px とかにしてもOK */
+  width: 150px !important;   /* ここを 220px とかにしてもOK */
 }
