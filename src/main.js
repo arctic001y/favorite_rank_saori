@@ -162,7 +162,7 @@ function buildUI(saori) {
           </label>
         </div>
 
-        <div class="inputsRow" style="margin-top:8px;">
+        <div class="inputsRow" style="margin-top:0;">
           <label>ふれあい回数:
             <input id="touchCount" type="number" value="0" min="0" step="1" style="width:90px;" />
           </label>

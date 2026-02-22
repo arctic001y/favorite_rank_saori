@@ -488,27 +488,26 @@ button {
 }
 
 /* 入力欄（生徒/現在ランク/ふれあい/スケジュール）を縦に並べる */
-/* 入力エリアを左寄せにする */
 .inputsUnderGrid{
   display: flex;
   flex-direction: column;
-  gap: 10px;
-
-  align-items: flex-start;   /* ←これが左寄せの決定打 */
-  text-align: left;          /* ラベル文字も左へ */
+  align-items: flex-start;
+  gap: 12px; 
+  margin-top: 12px; 
 }
 
-/* 各行（label）も左寄せ */
+/* 各labelの中は「ラベル + 入力」を横並び */
 .inputsUnderGrid label{
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 8px;
+  gap: 10px;
+  margin: 0;
+  line-height: 1.2;
 }
 
-/* 入力欄の幅を揃える（スマホでも自然） */
-.inputsUnderGrid select,
-.inputsUnderGrid input {
-  width: 160px;
-  max-width: 100%;
+/* input/selectの高さを揃える */
+.inputsUnderGrid input,
+.inputsUnderGrid select{
+  height: 30px;
+  padding: 2px 8px;
 }
