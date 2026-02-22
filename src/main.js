@@ -142,7 +142,7 @@ function buildUI(saori) {
           </select>
         </label>
 
-        <button id="resetBtn" type="button">個数リセット</button>
+        <button id="resetBtn" type="button">リセット</button>
       </div>
 
       <!-- 贈り物グリッド -->
