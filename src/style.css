@@ -431,11 +431,12 @@ button {
 .overlay{
   position: fixed;
   inset: 0;
+  display: flex;              /* ← grid でもOKだけど flexがより安定 */
+  align-items: center;
+  justify-content: center;
+  padding: 0;                 /* ← ここがズレの原因になりがちなので0に */
   background: rgba(0,0,0,.55);
-  display: grid;
-  place-items: center;
   z-index: 99999;
-  padding: 16px;
 }
 
 /* これが「箱」。透明にならないよう強制 */
