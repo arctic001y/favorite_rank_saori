@@ -412,3 +412,14 @@ body {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+.toolbar {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+/* ついでにスマホでタップの反応を良くする */
+button {
+  touch-action: manipulation;
+}
