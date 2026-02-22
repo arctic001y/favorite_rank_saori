@@ -425,6 +425,7 @@ button {
 }
 
 /* --- Confirm Modal: make it clearly visible --- */
+/* --- Confirm Modal: make it clearly visible --- */
 .overlay[hidden] { display: none !important; }
 
 .overlay{
